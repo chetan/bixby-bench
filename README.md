@@ -22,6 +22,9 @@ Bixby::Bench.run(10_000) do |b| # 10,000 = number of sample runs
 end
 ```
 
+You can see some sample output from an actual test here: 
+https://gist.github.com/chetan/d613e8f7d45600e1ca34
+
 ## Contributing to bixby-bench
  
 * Check out the latest master to make sure the feature hasn't been implemented or the bug hasn't been fixed yet.
