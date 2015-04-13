@@ -4,14 +4,18 @@ module Bixby
     class Report
       attr_accessor :tms, :allocation_stats
 
+      def initialize(bench)
+        @bench = bench
+      end
+
       def print
         if @allocation_stats then
           format = Benchmark::FORMAT.gsub(/\n$/, '') + " %16d %12d\n"
           allocations = allocation_stats.allocations.all.size
           memsize = allocation_stats.allocations.bytes.to_a.inject(&:+)
-          puts @tms.format(format, allocations, memsize)
+          @bench.puts @tms.format(format, allocations, memsize)
         else
-          puts @tms
+          @bench.puts @tms
         end
       end
     end

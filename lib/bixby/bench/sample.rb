@@ -5,7 +5,8 @@ module Bixby
 
       attr_reader :label, :block
 
-      def initialize(label, block, sample_size, memory)
+      def initialize(bench, label, block, sample_size, memory)
+        @bench       = bench
         @label       = label
         @block       = block
         @sample_size = sample_size
@@ -17,7 +18,7 @@ module Bixby
       end
 
       def measure
-        report = Report.new
+        report = Report.new(@bench)
         report.tms = Benchmark.measure { @sample_size.times { self.call } }
 
         if @memory then
