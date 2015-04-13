@@ -8,16 +8,21 @@ module Bixby
         @bench = bench
       end
 
-      def print
+      def to_s
         if @allocation_stats then
           format = Benchmark::FORMAT.gsub(/\n$/, '') + " %16d %12d\n"
           allocations = allocation_stats.allocations.all.size
           memsize = allocation_stats.allocations.bytes.to_a.inject(&:+)
-          @bench.puts @tms.format(format, allocations, memsize)
+          return @tms.format(format, allocations, memsize)
         else
-          @bench.puts @tms
+          return @tms
         end
       end
+
+      def print
+        @bench.puts self.to_s
+      end
+
     end
   end
 end

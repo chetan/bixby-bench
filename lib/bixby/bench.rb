@@ -5,6 +5,8 @@ require "allocation_stats"
 require "bixby/bench/divider"
 require "bixby/bench/sample"
 require "bixby/bench/report"
+require "bixby/bench/middleware"
+require "bixby/bench/long_running_bench"
 
 module Bixby
   class Bench
