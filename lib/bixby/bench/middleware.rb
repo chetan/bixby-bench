@@ -48,9 +48,15 @@ module Bixby
         @fh ||= ThreadWriter.new(File.open(File.join(Rails.root, "log", "bench.log"), 'a+'))
         @bench ||= LongRunningBench.new(1, true, @fh)
 
+        path = env["REQUEST_URI"]
+        if path =~ /\.(js|css|png|gif|jpg)$/ then
+          # pass thru calls to static resources
+          return @app.call(env)
+        end
+
         ret = nil
         begin
-          @bench.sample(env["REQUEST_URI"]) {
+          @bench.sample(path) {
             ret = @app.call(env)
           }
         rescue => ex
