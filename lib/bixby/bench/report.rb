@@ -15,7 +15,7 @@ module Bixby
           memsize = allocation_stats.allocations.bytes.to_a.inject(&:+)
           return @tms.format(format, allocations, memsize)
         else
-          return @tms
+          return @tms.format
         end
       end
 
