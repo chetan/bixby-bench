@@ -6,7 +6,6 @@ module Bixby
 
     class ThreadWriter
 
-      include Bixby::Log
       extend Forwardable
       def_delegators :@fh, :sync, :sync=
 
@@ -40,12 +39,27 @@ module Bixby
 
       include Bixby::Log
 
-      def initialize(app)
+      def initialize(app, logfile=nil)
         @app = app
+
+        # set log path
+        @logfile = if logfile then
+          logfile
+        elsif Module.const_defined? :Rails then
+          File.join(Rails.root, "log", "bench.log")
+        elsif ENV["BUNDLE_GEMFILE"] then
+          File.join(File.dirname(ENV["BUNDLE_GEMFILE"]), "bench.log")
+        else
+          "bench.log"
+        end
+
+        @logfile = File.expand_path(@logfile)
+        STDERR.puts "Writing benchmark log to #{@logfile}"
+
       end
 
       def call(env)
-        @fh ||= ThreadWriter.new(File.open(File.join(Rails.root, "log", "bench.log"), 'a+'))
+        @fh ||= ThreadWriter.new(File.open(@logfile, 'a+'))
         @bench ||= LongRunningBench.new(1, true, @fh)
 
         path = env["REQUEST_URI"]
